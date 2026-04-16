@@ -20,14 +20,14 @@ export default function BookingDetail() {
   useEffect(() => { dispatch(fetchBooking(bookingId)); }, [dispatch, bookingId]);
 
   if (loading) return <div style={{ textAlign: 'center', padding: '60px', color: '#6b7280' }}>Loading...</div>;
-  if (error) return <div style={{ textAlign: 'center', padding: '60px', color: '#dc2626' }}>⚠ {error}</div>;
+  if (error) return <div style={{ textAlign: 'center', padding: '60px', color: '#dc2626' }}>{error}</div>;
   if (!b) return <div style={{ textAlign: 'center', padding: '60px', color: '#6b7280' }}>Booking not found</div>;
 
   return (
     <div style={containerStyle}>
       <div style={cardStyle}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <h2 style={{ margin: 0, color: '#dc2626', fontSize: '22px' }}>🎫 Booking #{b.bookingId}</h2>
+          <h2 style={{ margin: 0, color: '#dc2626', fontSize: '22px' }}>Booking #{b.bookingId}</h2>
           <span style={badgeStyle(b.bookingStatus)}>{b.bookingStatus}</span>
         </div>
         <div style={rowStyle}><span style={labelStyle}>Schedule ID</span><span style={valueStyle}>#{b.scheduleId}</span></div>
@@ -38,7 +38,7 @@ export default function BookingDetail() {
 
         {b.passengers && b.passengers.length > 0 && (
           <div style={{ marginTop: '20px' }}>
-            <h3 style={{ fontSize: '16px', color: '#1f2937', marginBottom: '12px' }}>👥 Passengers</h3>
+            <h3 style={{ fontSize: '16px', color: '#1f2937', marginBottom: '12px' }}>Passengers</h3>
             {b.passengers.map((p, i) => (
               <div key={i} style={{ background: '#f9fafb', padding: '10px 14px', borderRadius: '8px', marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ fontWeight: '600', fontSize: '14px' }}>{p.name}</span>
@@ -49,8 +49,8 @@ export default function BookingDetail() {
         )}
 
         <div style={{ display: 'flex', gap: '10px', marginTop: '24px' }}>
-          <button style={{ ...btnStyle, background: '#f3f4f6', color: '#374151' }} onClick={() => navigate('/booking')}>← Back</button>
-          {b.bookingStatus === 'PENDING' && <button style={{ ...btnStyle, background: '#dc2626', color: '#fff' }} onClick={() => navigate(`/payment?bookingId=${b.bookingId}&paymentId=${b.paymentId}`)}>Pay Now →</button>}
+          <button style={{ ...btnStyle, background: '#f3f4f6', color: '#374151' }} onClick={() => navigate('/booking')}>Back</button>
+          {b.bookingStatus === 'PENDING' && <button style={{ ...btnStyle, background: '#dc2626', color: '#fff' }} onClick={() => navigate(`/payment?bookingId=${b.bookingId}&paymentId=${b.paymentId}`)}>Pay Now</button>}
           {b.bookingStatus !== 'CANCELLED' && <button style={{ ...btnStyle, background: '#fef2f2', color: '#dc2626' }} onClick={() => dispatch(cancelBooking(b.bookingId))}>Cancel Booking</button>}
         </div>
       </div>

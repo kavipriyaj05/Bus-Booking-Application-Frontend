@@ -34,7 +34,7 @@ export default function SearchForm() {
 
   return (
     <form style={searchFormStyles.container} onSubmit={handleSearch}>
-      <h2 style={searchFormStyles.title}>🔍 Search Buses</h2>
+      <h2 style={searchFormStyles.title}>Search Buses</h2>
       <div style={searchFormStyles.row}>
         <div style={searchFormStyles.fieldGroup}>
           <label style={searchFormStyles.label}>From</label>

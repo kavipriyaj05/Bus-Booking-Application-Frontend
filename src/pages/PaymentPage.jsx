@@ -1,26 +1,25 @@
 import PaymentForm from '../components/payment/PaymentForm';
 import PaymentStatus from '../components/payment/PaymentStatus';
-import { useSearchParams } from 'react-router-dom';
-
-const pageStyle = { minHeight: '100vh', background: '#f9fafb', fontFamily: "'Inter', 'Segoe UI', sans-serif" };
-const navStyle = { background: '#dc2626', padding: '14px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' };
-const logoStyle = { color: '#fff', fontSize: '18px', fontWeight: '700', textDecoration: 'none' };
-const linkStyle = { color: 'rgba(255,255,255,0.85)', fontSize: '13px', textDecoration: 'none', marginLeft: '16px' };
+import { useLocation, useSearchParams, Link } from 'react-router-dom';
 
 export default function PaymentPage() {
+  const location = useLocation();
   const [searchParams] = useSearchParams();
-  const isStatus = searchParams.has('paymentId') && !searchParams.has('bookingId');
+  const isSuccess = location.pathname === '/payment/success';
+  const isStatus = isSuccess || searchParams.has('paymentId') || searchParams.has('transactionId');
 
   return (
-    <div style={pageStyle}>
-      <nav style={navStyle}>
-        <a href="/" style={logoStyle}>🚌 BusBooking</a>
-        <div>
-          <a href="/search" style={linkStyle}>Search</a>
-          <a href="/booking" style={linkStyle}>My Bookings</a>
+    <div className="search-page">
+      <nav className="page-nav">
+        <Link to="/" className="page-nav-brand">NextStop</Link>
+        <div className="page-nav-links">
+          <Link to="/search" className="page-nav-link">Search</Link>
+          <Link to="/bookings" className="page-nav-link">My Bookings</Link>
         </div>
       </nav>
-      {isStatus ? <PaymentStatus /> : searchParams.has('transactionId') ? <PaymentStatus /> : <PaymentForm />}
+      <div className="page-content">
+        {isStatus ? <PaymentStatus /> : <PaymentForm />}
+      </div>
     </div>
   );
 }

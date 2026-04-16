@@ -27,14 +27,14 @@ export default function BusResults() {
 
   return (
     <div style={styles.container}>
-      <h3 style={styles.title}>🚌 Available Buses ({searchResults.length})</h3>
+      <h3 style={styles.title}>Available Buses ({searchResults.length})</h3>
       {searchResults.map((bus) => (
         <div key={bus.scheduleId} style={styles.card} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 4px 20px rgba(220,38,38,0.18)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 2px 12px rgba(220,38,38,0.08)'}>
           <div>
             <div style={styles.busName}>{bus.busName}</div>
             <div style={styles.route}>{bus.source} → {bus.destination}</div>
-            <div style={styles.time}>🕐 {bus.startTime} — {bus.endTime}</div>
-            <div style={styles.date}>📅 {bus.journeyDate}</div>
+            <div style={styles.time}>{bus.startTime} — {bus.endTime}</div>
+            <div style={styles.date}>{bus.journeyDate}</div>
           </div>
           <div style={styles.right}>
             <span style={{ ...styles.seats, ...(bus.availableSeats > 0 ? styles.seatsAvail : styles.seatsFull) }}>{bus.availableSeats > 0 ? `${bus.availableSeats} seats available` : 'No seats'}</span>

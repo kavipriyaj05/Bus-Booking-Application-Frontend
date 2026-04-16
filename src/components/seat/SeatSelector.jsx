@@ -41,12 +41,12 @@ export default function SeatSelector({ scheduleId }) {
       </div>
       {!lockToken ? (
         <div style={styles.row}>
-          <button style={{ ...styles.btn, ...styles.lockBtn, ...(loading ? styles.disabled : {}) }} onClick={handleLock} disabled={loading}>{loading ? 'Locking...' : '🔒 Lock Seats'}</button>
+          <button style={{ ...styles.btn, ...styles.lockBtn, ...(loading ? styles.disabled : {}) }} onClick={handleLock} disabled={loading}>{loading ? 'Locking...' : 'Lock Seats'}</button>
           <button style={{ ...styles.btn, ...styles.clearBtn }} onClick={handleClear}>Clear</button>
         </div>
       ) : (
         <>
-          <div style={styles.lockInfo}>✅ Seats locked! Token expires at {new Date(lockExpiresAt).toLocaleTimeString()}</div>
+          <div style={styles.lockInfo}>Seats locked! Token expires at {new Date(lockExpiresAt).toLocaleTimeString()}</div>
           <button style={styles.proceedBtn} onClick={handleProceed}>Proceed to Booking →</button>
           <button style={styles.releaseBtn} onClick={handleRelease}>Release Seats</button>
         </>

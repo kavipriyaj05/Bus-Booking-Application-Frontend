@@ -24,7 +24,7 @@ export default function BusDetails({ busId }) {
 
   return (
     <div style={styles.card}>
-      <h3 style={styles.title}>🚌 {busDetail.busName}</h3>
+      <h3 style={styles.title}>{busDetail.busName}</h3>
       <div style={styles.row}><span style={styles.label}>Route</span><span style={styles.value}>{busDetail.source} → {busDetail.destination}</span></div>
       <div style={styles.row}><span style={styles.label}>Departure</span><span style={styles.value}>{busDetail.startTime}</span></div>
       <div style={styles.row}><span style={styles.label}>Arrival</span><span style={styles.value}>{busDetail.endTime}</span></div>

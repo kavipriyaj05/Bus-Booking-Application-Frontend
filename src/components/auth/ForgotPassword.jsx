@@ -21,7 +21,7 @@ const ForgotPassword = () => {
     <div className="auth-container">
       <div className="auth-card">
         <div className="auth-header">
-          <div className="auth-icon">🔑</div>
+          <div className="auth-brand">NextStop</div>
           <h2>{step === 1 ? 'Forgot Password' : 'Reset Password'}</h2>
           <p>{step === 1 ? 'Enter your email to receive a reset token' : 'Enter the token and your new password'}</p>
         </div>
@@ -49,7 +49,7 @@ const ForgotPassword = () => {
           </form>
         )}
         <div className="auth-links">
-          <Link to="/login">← Back to Login</Link>
+          <Link to="/login">Back to Login</Link>
         </div>
       </div>
     </div>

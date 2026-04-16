@@ -16,15 +16,14 @@ export default function BookingHistory() {
   useEffect(() => { dispatch(fetchBookingHistory()); }, [dispatch]);
 
   if (loading) return <div style={{ textAlign: 'center', padding: '60px', color: '#6b7280' }}>Loading bookings...</div>;
-  if (error) return <div style={{ textAlign: 'center', padding: '60px', color: '#dc2626' }}>⚠ {error}</div>;
+  if (error) return <div style={{ textAlign: 'center', padding: '60px', color: '#dc2626' }}>{error}</div>;
 
   return (
     <div style={containerStyle}>
-      <h2 style={{ color: '#dc2626', marginBottom: '24px', fontSize: '24px' }}>📋 My Bookings</h2>
+      <h2 style={{ color: '#dc2626', marginBottom: '24px', fontSize: '24px' }}>My Bookings</h2>
       {bookings.length === 0 ? (
         <div style={{ ...cardStyle, textAlign: 'center', padding: '60px' }}>
-          <div style={{ fontSize: '48px', marginBottom: '12px' }}>🎫</div>
-          <p style={{ color: '#6b7280', margin: 0 }}>No bookings yet. Search for a bus to get started!</p>
+          <p style={{ color: '#6b7280', margin: 0, fontSize: '16px' }}>No bookings yet. Search for a bus to get started!</p>
         </div>
       ) : bookings.map((b) => (
         <div key={b.bookingId} style={cardStyle}>

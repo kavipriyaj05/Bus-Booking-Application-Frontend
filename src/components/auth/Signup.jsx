@@ -19,9 +19,9 @@ const Signup = () => {
     <div className="auth-container">
       <div className="auth-card">
         <div className="auth-header">
-          <div className="auth-icon">🚌</div>
+          <div className="auth-brand">NextStop</div>
           <h2>Create Account</h2>
-          <p>Join Bus Booking today</p>
+          <p>Join NextStop today</p>
         </div>
         {error && <div className="auth-error">{error}</div>}
         <form onSubmit={handleSubmit}>

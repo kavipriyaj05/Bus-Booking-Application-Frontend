@@ -1,61 +1,66 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { fetchPayment, processWebhook } from '../../store/slices/paymentSlice';
 
-const containerStyle = { maxWidth: '500px', margin: '40px auto', padding: '0 20px' };
-const cardStyle = { background: '#fff', borderRadius: '12px', padding: '30px', boxShadow: '0 4px 20px rgba(0,0,0,0.08)', textAlign: 'center' };
-const btnStyle = { padding: '10px 24px', borderRadius: '8px', border: 'none', fontSize: '14px', fontWeight: '600', cursor: 'pointer', marginTop: '16px' };
+const containerStyle = { maxWidth: '500px', margin: '60px auto', padding: '0 20px' };
+const cardStyle = { background: '#fff', borderRadius: '16px', padding: '40px 30px', boxShadow: '0 4px 24px rgba(0,0,0,0.08)', textAlign: 'center' };
+const btnStyle = { padding: '10px 24px', borderRadius: '8px', border: 'none', fontSize: '14px', fontWeight: '600', cursor: 'pointer' };
 
 export default function PaymentStatus() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const paymentId = searchParams.get('paymentId');
-  const transactionId = searchParams.get('transactionId');
-  const { currentPayment: p, loading, error } = useSelector((state) => state.payment);
-  const [simulated, setSimulated] = useState(false);
+  const bookingId = searchParams.get('bookingId');
+  const amount = searchParams.get('amount');
+  const status = searchParams.get('status') || 'SUCCESS';
+  const seats = searchParams.get('seats');
 
-  useEffect(() => { if (paymentId) dispatch(fetchPayment(paymentId)); }, [dispatch, paymentId]);
-
-  const simulatePayment = async (status) => {
-    await dispatch(processWebhook({ transactionId: transactionId || p?.transactionId, status }));
-    setSimulated(true);
-    if (paymentId) dispatch(fetchPayment(paymentId));
-  };
-
-  if (loading) return <div style={{ textAlign: 'center', padding: '60px', color: '#6b7280' }}>Loading...</div>;
-  if (error) return <div style={{ textAlign: 'center', padding: '60px', color: '#dc2626' }}>⚠ {error}</div>;
-
-  const status = p?.paymentStatus || 'PENDING';
-  const icon = status === 'SUCCESS' ? '✅' : status === 'FAILED' ? '❌' : '⏳';
-  const color = status === 'SUCCESS' ? '#16a34a' : status === 'FAILED' ? '#dc2626' : '#ca8a04';
+  const isSuccess = status === 'SUCCESS';
 
   return (
     <div style={containerStyle}>
       <div style={cardStyle}>
-        <div style={{ fontSize: '64px', marginBottom: '12px' }}>{icon}</div>
-        <h2 style={{ margin: '0 0 6px', color, fontSize: '24px' }}>Payment {status}</h2>
-        <p style={{ color: '#6b7280', fontSize: '14px', margin: '0 0 20px' }}>Transaction: {p?.transactionId || transactionId || 'N/A'}</p>
-        {p && (
-          <div style={{ background: '#f9fafb', borderRadius: '8px', padding: '16px', textAlign: 'left', marginBottom: '20px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #e5e7eb' }}><span style={{ color: '#6b7280', fontSize: '13px' }}>Booking ID</span><span style={{ fontWeight: '600', fontSize: '13px' }}>#{p.bookingId}</span></div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #e5e7eb' }}><span style={{ color: '#6b7280', fontSize: '13px' }}>Method</span><span style={{ fontWeight: '600', fontSize: '13px' }}>{p.paymentMethod || 'N/A'}</span></div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0' }}><span style={{ color: '#6b7280', fontSize: '13px' }}>Amount</span><span style={{ fontWeight: '700', fontSize: '14px', color: '#dc2626' }}>₹{p.amount}</span></div>
+        {/* Success Icon */}
+        <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: isSuccess ? '#dcfce7' : '#fef2f2', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke={isSuccess ? '#16a34a' : '#dc2626'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            {isSuccess ? <polyline points="20 6 9 17 4 12" /> : <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>}
+          </svg>
+        </div>
+
+        <h2 style={{ margin: '0 0 4px', color: isSuccess ? '#16a34a' : '#dc2626', fontSize: '26px', fontWeight: '700' }}>
+          {isSuccess ? 'Payment Successful' : 'Payment Failed'}
+        </h2>
+        <p style={{ color: '#6b7280', fontSize: '14px', margin: '0 0 24px' }}>
+          {isSuccess ? 'Your booking has been confirmed!' : 'Something went wrong with your payment.'}
+        </p>
+
+        <div style={{ background: '#f9fafb', borderRadius: '10px', padding: '18px', textAlign: 'left', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e5e7eb' }}>
+            <span style={{ color: '#6b7280', fontSize: '13px' }}>Booking ID</span>
+            <span style={{ fontWeight: '700', fontSize: '13px', color: '#1f2937' }}>#{bookingId}</span>
           </div>
-        )}
-        {!simulated && status === 'PENDING' && (
-          <div>
-            <p style={{ color: '#6b7280', fontSize: '13px', marginBottom: '12px' }}>Simulate payment result:</p>
-            <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-              <button style={{ ...btnStyle, background: '#16a34a', color: '#fff', marginTop: 0 }} onClick={() => simulatePayment('SUCCESS')}>✓ Simulate Success</button>
-              <button style={{ ...btnStyle, background: '#dc2626', color: '#fff', marginTop: 0 }} onClick={() => simulatePayment('FAILED')}>✗ Simulate Failure</button>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e5e7eb' }}>
+            <span style={{ color: '#6b7280', fontSize: '13px' }}>Status</span>
+            <span style={{ fontWeight: '600', fontSize: '13px', color: isSuccess ? '#16a34a' : '#dc2626' }}>{isSuccess ? 'CONFIRMED' : 'FAILED'}</span>
+          </div>
+          {seats && (
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e5e7eb' }}>
+              <span style={{ color: '#6b7280', fontSize: '13px' }}>Seats</span>
+              <span style={{ fontWeight: '600', fontSize: '13px', color: '#374151' }}>{seats}</span>
             </div>
+          )}
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0' }}>
+            <span style={{ color: '#6b7280', fontSize: '13px' }}>Amount Paid</span>
+            <span style={{ fontWeight: '700', fontSize: '16px', color: '#16a34a' }}>₹{Number(amount || 0).toLocaleString()}</span>
+          </div>
+        </div>
+
+        {isSuccess && (
+          <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '8px', padding: '12px', marginBottom: '24px', fontSize: '13px', color: '#166534' }}>
+            A confirmation email has been sent to your registered email address.
           </div>
         )}
-        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '20px' }}>
-          <button style={{ ...btnStyle, background: '#f3f4f6', color: '#374151' }} onClick={() => navigate('/booking')}>My Bookings</button>
-          <button style={{ ...btnStyle, background: '#dc2626', color: '#fff' }} onClick={() => navigate('/')}>Home</button>
+
+        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+          <button style={{ ...btnStyle, background: '#f3f4f6', color: '#374151' }} onClick={() => navigate('/bookings')}>My Bookings</button>
+          <button style={{ ...btnStyle, background: '#dc2626', color: '#fff' }} onClick={() => navigate('/search')}>Book Another</button>
         </div>
       </div>
     </div>

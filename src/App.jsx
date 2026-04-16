@@ -27,8 +27,11 @@ function App() {
           <Route path="/search" element={<PrivateRoute><SearchPage /></PrivateRoute>} />
           <Route path="/seats/:scheduleId" element={<PrivateRoute><SeatPage /></PrivateRoute>} />
           <Route path="/booking/:scheduleId" element={<PrivateRoute><BookingPage /></PrivateRoute>} />
+          <Route path="/booking" element={<PrivateRoute><BookingPage /></PrivateRoute>} />
           <Route path="/bookings" element={<PrivateRoute><BookingPage /></PrivateRoute>} />
+          <Route path="/payment/success" element={<PrivateRoute><PaymentPage /></PrivateRoute>} />
           <Route path="/payment/:bookingId" element={<PrivateRoute><PaymentPage /></PrivateRoute>} />
+          <Route path="/payment" element={<PrivateRoute><PaymentPage /></PrivateRoute>} />
         </Routes>
       </Suspense>
     </BrowserRouter>
